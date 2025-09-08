@@ -41,11 +41,31 @@ const [post, {select:editorPosts}] = await Promise.all([
 
         <div className="space-y-5 mt-10 max-w-4xl mx-auto">
           <div className="flex-between gap-5">
-            <Link href={`/user/${post.author?._id}`} className='flex gap-2 items-center mb-3'>
+            {/* <Link href={`/foobar/${post.author?._id}`} className='flex gap-2 items-center mb-3'>
               <Image src={post.author.image} alt='avatar' width={64} height={64} className='rounded-full drop-shadow-lg' />
               <div className="text-20-medium">{post.author.name}</div>
               <div className="text-20-medium">{post.author.username}</div>
-            </Link>
+            </Link> */}
+            <Link 
+  href={post.author?._id ? `/foobar/${post.author._id}` : "#"} 
+  className="flex gap-2 items-center mb-3"
+>
+  {post.author?.image ? (
+    <Image
+      src={post.author.image}
+      alt="avatar"
+      width={64}
+      height={64}
+      className="rounded-full drop-shadow-lg"
+    />
+  ) : (
+    <div className="w-16 h-16 rounded-full bg-gray-300" />
+  )}
+
+  <div className="text-20-medium">{post.author?.name || "Unknown"}</div>
+  <div className="text-20-medium">{post.author?.username || "anonymous"}</div>
+</Link>
+
             <p className="category-tag">{post.category}</p>
           </div>
 
@@ -53,7 +73,7 @@ const [post, {select:editorPosts}] = await Promise.all([
           {parsedContent ? (
             <article
               className="prose max-w-4xl font-work-sans break-all"
-              dangerouslySetInnerHTML={{ __html: parsedContent }} // ✅ Correct usage
+              dangerouslySetInnerHTML={{ __html: parsedContent }} 
             />
           ) : (
             <p className="no-result">No details provided</p>
